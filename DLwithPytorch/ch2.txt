@@ -1,0 +1,13 @@
+ch2
+
+신경망(Neural Network) 
+- 입력변수들 관련된 변수 간의 관계에 대해 학습하는 알고리즘
+
+- 신경망 구축(정의)  1. torch.nn.Sequential class 사용
+                      - 네트워크를 인스턴스화 하는 동시에 원하는 신경망에 연산순서를 인수로 전달
+                    2. torch.nn.Module 클래스 사용
+                      - 더 복잡하고 강력, 매끄러움
+                      
+1. 순차형 신경망  - torch.nn 모듈애 정의된 연산을 사용
+                 - 신경망을 인스턴스화 하기 위해 torch.nn.Sequential 클래스에 순차적으로 연산들을 인수로 전달
+2. nn.Module
