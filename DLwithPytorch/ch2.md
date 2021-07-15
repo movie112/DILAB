@@ -164,6 +164,73 @@ x.type(torch.DoubleTensor)
 
 > - tensor로 dataset 가져오기
 
+```python
+# 1
+import numpy as np
+admit_data = np.genfromtxt('admit_status.csv', delimiter = ',', skip_header = 1)
+print(admit_data)
+# 2
+admit_tensor = torch.from_numpy(admit_data)
+```
+
+## Pytorch에서 신경망 학습하기
+
+> 앞서 정의한 신경망은 처음에 가중치를 랜덤 생성: 신경망에 바로 제이터를 전달하면, 의미없는 예측 결과 get
+> - Criterion
+>   - 참 값과 예측 값의 손실 스코어
+> - Optimizer 
+>   - 가능한한 신경망의 예측이 참 값에 가까워지도록 함 (가중치를 조정하기 위해)
+> - 학습 단계(trianing phase)
+>   - 신경망의 가중치를 업데이트하기 위해 Criterion의 loss를 이용하는 Opimizer의 반복적인 과정 
+>   <br/>
+> 신경망 학습 전에, 데이터셋을 입력x, 출력y로 분리
+> 
+```
+x_train = admit_tensor[:300, 1:].float()
+y_train = admit_tensor[:300, 0].float()
+x_test = admit_tensor[300:, 1:].float()
+y_test = admit_tensor[300:, 0].float()
+```
+> criterion, optimizer의 인스턴스 생성
+>   - criterion
+>       - torch.nn 모듈에 마련
+>       - BCELoss(): 2진 분류, binary cross-entropy loss
+>   
+```
+criterion = nn.BCELoss()
+```
+
+>   - optimizer   
+>       - torch.optim 모듈에 내장
+>       - 인자로 parameter or W -> parameters() 메소드를 이용하여 접근
+>       - SGD optimizer: stochastic gradient descent optimizer
+
+```
+optimizer = torch.optim.SGD(my_network.parameters(), lr=0.01)
+```
+
+> 가중치를 업데이트하는 과정 for 루프
+>   1. 예측 결과를 얻기 위해 데이터 전달: 신경망의 인스턴스의 인자로 입력 데이터 전달하면 됨
+>   2. loss 계산: 예측과 참 값을 criterion에 전달하면 됨
+>   3. 누적된 gradient 초기화: zero_grad() 메소드 이용
+>   4. backpropagation 단계 수행: 계산된 loss의 backward() 메소드를 이용
+>   5. W 업데이트: step() 메소드 
+
+```
+for epoch in range(100):
+    # 1
+    y_pred = my_network(x_train)
+    # 2 
+    loss_score = criterion(y_pred, y_train)
+    print('epoch: ', epoch, 'loss: ', loss_score)
+    
+    # 3
+    optimizer.zero_grad()
+    # 4
+    loss_score.backward()
+    # 5
+    optimizer.step()
+```
 
 <br/>
 
