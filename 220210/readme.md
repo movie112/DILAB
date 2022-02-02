@@ -1,5 +1,5 @@
 ## [paper review]
-##  XLNet
+##  BART + XLNet
 - L : ELECTRA
 - K : sentence BERT
 - Y : PEGASUS
